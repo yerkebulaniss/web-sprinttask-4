@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Profile</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+	<style>
+	</style>
+</head>
+
+<body>
+	<div class="">
+		<header>
+			<nav class="navbar navbar-expand-lg" style="background-color: #0d96a0; color: #fff">
+				<div class="ms-2 w-100">
+					<div class="d-flex justify-content-between w-100">
+						<a class="navbar-brand text-white" href="#"><b>TWITTER</b></a>
+						<div class="">
+							<ul class="navbar-nav">
+								<li class="nav-item">
+									<a class="nav-link text-white" href="#">Tweets</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link text-white" href="profile.html" id="profile-nav">Profile</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link text-white" href="login.html" id="logout-nav">Logout</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</nav>
+		</header>
+		<main class="">
+			<div class="container-xxl" id="main-div">
+				<div>
+					<h1 class="d-flex justify-content-center" id="welcome"></h1>
+				</div>
+				<div class="d-flex justify-content-center flex-column" style="align-items: center;">
+					<div class="my-3">
+						<label for="emailOutput" class="form-label">EMAIL :</label>
+						<p class="fw-bold" id="emailOutput"></p>
+					</div>
+					<div class="mb-3">
+						<label for="nameOutput" class="form-label">FULL NAME :</label>
+						<p class="fw-bold" id="nameOutput"></p>
+					</div>
+					<div class="mb-3">
+						<label for="countryOutput" class="form-label">COUNTRY :</label>
+						<p class="fw-bold" id="countryOutput"></p>
+					</div>
+					<div class="mb-3">
+						<label for="birthOutput" class="form-label">BIRTHDATE :</label>
+						<p class="fw-bold" id="birthOutput"></p>
+					</div>
+				</div>
+			</div>
+		</main>
+	</div>
+
+	<script>
+		function findUserByEmailAndPassword() {
+			let loggedInUserJSON = sessionStorage.getItem('loggedInUser');
+    		let loggedInUser = JSON.parse(loggedInUserJSON) || {};
+
+			let usersJSON = localStorage.getItem('users');
+			let users = JSON.parse(usersJSON) || [];
+
+			return users.find(user => {
+				return user.email === loggedInUser.email && user.password === loggedInUser.password;
+			});
+		}
+
+		function logout() {
+			sessionStorage.removeItem('loggedInUser');
+		}
+
+		document.addEventListener('DOMContentLoaded', () => {
+			let user = findUserByEmailAndPassword();
+
+			if (user) {
+				document.getElementById("profile-nav").addEventListener('click', logout);
+
+				document.getElementById("welcome").textContent = "Welcome " + user.name;
+				document.getElementById("emailOutput").textContent = user.email;
+				document.getElementById("nameOutput").textContent = user.name;
+				document.getElementById("countryOutput").textContent = user.country;
+				document.getElementById("birthOutput").textContent = user.birthdate;
+			} else {
+				window.location.href = 'login.html';
+			}
+		});
+	</script>
+</body>
+
+</html>
